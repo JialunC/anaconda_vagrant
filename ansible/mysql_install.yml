@@ -1,0 +1,12 @@
+---
+  - name: install mysql
+    apt: pkg=mysql-server state=installed update_cache=True
+
+  - name: install mysql-python bindings
+    apt: name=python-mysqldb state=installed update_cache=True
+
+  - name: Start the MySQL service
+    action: service name=mysql state=started
+
+  - name: Reset root PW
+    command: mysql -u root --execute="UPDATE mysql.user SET authentication_string = PASSWORD('root123') WHERE User = 'root' AND (Host = 'localhost' OR Host = '127.0.0.1');"
