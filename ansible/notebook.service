@@ -3,7 +3,7 @@ Description=start jupyter notebook
 
 [Service]
 Type=simple
-ExecStart=/opt/conda/bin/jupyter notebook --notebook-dir=/vagrant --ip=0.0.0.0 --NotebookApp.token='' --NotebookApp.password='' --no-browser --allow-root
+ExecStart=/opt/conda/bin/jupyter notebook --notebook-dir=/vagrant/workspace --ip=0.0.0.0 --NotebookApp.token='' --NotebookApp.password='' --no-browser --allow-root
 User=root
 Group=root
 Restart=always
