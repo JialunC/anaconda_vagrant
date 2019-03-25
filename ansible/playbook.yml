@@ -41,3 +41,15 @@
     #     - sqlite
         
     - include: mysql_install.yml
+
+    - name: copy upstart file
+      template: src=notebook.service dest=/etc/systemd/system/notebook.service
+    
+    - name: fix permission
+      file: path=/etc/systemd/system/notebook.service owner=root group=root mode=0644
+    
+    - name: enable notebook on boot
+      systemd:
+        name: notebook
+        enabled: yes
+        daemon_reload: yes
