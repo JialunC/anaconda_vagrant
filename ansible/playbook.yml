@@ -19,8 +19,8 @@
     - name: download anaconda installer
       get_url: url=https://repo.anaconda.com/archive/Anaconda3-5.3.0-Linux-x86_64.sh dest=/etc/Anaconda3-5.3.0-Linux-x86_64.sh
 
-    # - name: install anaconda
-    #   shell: /bin/bash /etc/Anaconda3-5.3.0-Linux-x86_64.sh -u -b -p /opt/conda
+    - name: install anaconda
+      shell: /bin/bash /etc/Anaconda3-5.3.0-Linux-x86_64.sh -u -b -p /opt/conda
 
     - name: add anaconda to bashrc
       shell: echo ". /opt/conda/etc/profile.d/conda.sh" >> /home/vagrant/.bashrc
@@ -32,12 +32,24 @@
         insertafter: 'EOF'
         state: present
 
-    # - name: install required packages
-    #   shell: /bin/bash -c "/opt/conda/bin/conda install {{item}} -y --quiet"
-    #   with_items:
-    #     - jupyter
-    #     - sqlalchemy
-    #     - pymysql
-    #     - sqlite
+    - name: install required packages
+      shell: /bin/bash -c "/opt/conda/bin/conda install {{item}} -y --quiet"
+      with_items:
+        - jupyter
+        - sqlalchemy
+        - pymysql
+        - sqlite
         
     - include: mysql_install.yml
+
+    - name: copy upstart file
+      template: src=notebook.service dest=/etc/systemd/system/notebook.service
+    
+    - name: fix permission
+      file: path=/etc/systemd/system/notebook.service owner=root group=root mode=0644
+    
+    - name: enable notebook on boot
+      systemd:
+        name: notebook
+        enabled: yes
+        daemon_reload: yes

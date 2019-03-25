@@ -1,9 +1,9 @@
 ---
   - name: install mysql
-    apt: pkg=mysql-server state=installed update_cache=True
+    apt: pkg=mysql-server state=present update_cache=True
 
   - name: install mysql-python bindings
-    apt: name=python-mysqldb state=installed update_cache=True
+    apt: name=python-mysqldb state=present update_cache=True
 
   - name: Start the MySQL service
     action: service name=mysql state=started
